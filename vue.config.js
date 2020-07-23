@@ -2,7 +2,6 @@
 const autoprefixer = require('autoprefixer')
 // 导包
 const pxtorem = require('postcss-pxtorem')
-
 const path = require('path')
 // 暴露出去
 module.exports = {
@@ -22,14 +21,11 @@ module.exports = {
       }
     }
   },
-  // 插件选项
+
   pluginOptions: {
-    // style-resources-loader 插件的配置
     'style-resources-loader': {
-      // 处理的是 less
       preProcessor: 'less',
-      // 路径 所有/src/styles/下面的less文件
-      patterns: [path.resolve(__dirname, './src/styles/*.less')]
+      patterns: [path.resolve(__dirname, './src/styles/var.less')]
     }
   }
 }

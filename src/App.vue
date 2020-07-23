@@ -14,7 +14,6 @@ export default {
 .box{
   width: 200px;
   height: 200px;
-  background-color: @very-green;
-
+  background-color: @very-pink;
 }
 </style>
