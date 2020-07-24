@@ -9,6 +9,9 @@ import Vant from 'vant'
 // 导入vant的css样式
 import 'vant/lib/index.css'
 import 'normalize.css'
+import './style/iconfont.css'
+import './style/base.less'
+
 // 导入flexible
 import 'amfe-flexible'
 Vue.use(Vant)
