@@ -6,6 +6,8 @@
       route
       active-color="#e40137"
       inactive-color="#B4B4BD"
+      v-show="$route.meta.showTabbar"
+      placeholder
     >
       <van-tabbar-item to="/Company" icon="home-o">
         <span>公司</span>
