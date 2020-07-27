@@ -1,5 +1,5 @@
 <template>
-  <div class="navBar">
+  <div class="navbar">
     <van-nav-bar
       :title="title"
       :left-text="leftText"
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'navBar',
+  name: 'navbar',
   props: ['title', 'leftText', 'rightText'],
   methods: {
     onClickLeft () {
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="less">
-.navBar {
+.navbar {
   .van-nav-bar {
     .van-nav-bar__left {
       padding: 0;

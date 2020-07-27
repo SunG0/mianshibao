@@ -5,6 +5,8 @@ import Question from '@/views/Question'
 import My from '@/views/My'
 import Find from '@/views/Find'
 import login from '@/views/Login'
+import userInfo from '@/views/userInfo'
+import fixname from '@/views/fixname'
 Vue.use(VueRouter)
 
 const routes = [
@@ -42,10 +44,15 @@ const routes = [
   },
   {
     path: '/login',
-    component: login,
-    meta: {
-      showTabbar: false
-    }
+    component: login
+  },
+  {
+    path: '/userInfo',
+    component: userInfo
+  },
+  {
+    path: '/fixname',
+    component: fixname
   }
 ]
 

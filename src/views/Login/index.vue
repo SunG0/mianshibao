@@ -2,8 +2,8 @@
   <div class="login">
     <div class="top">
       <div class="header"></div>
-      <div class="bar">
-        <navBar @onClickLeft="onClickLeft"></navBar>
+      <div>
+        <navbar @onClickLeft="onClickLeft"></navbar>
       </div>
     </div>
     <div class="content">
@@ -166,10 +166,10 @@ export default {
 
     .van-field__control {
       padding-left: 20px;
-      // border-bottom: 1px solid #f7f4f5;
     }
     .item {
       border-bottom: 1px solid #f7f4f5;
+      color: #000;
     }
     .btn-col {
       height: 45px;
@@ -185,10 +185,6 @@ export default {
       color: #00b8d4;
       border: none;
     }
-    // .line {
-    //   width: 345px;
-    //   height: 1px;
-    // }
     p {
       font-size: 12px;
       font-weight: 400;

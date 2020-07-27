@@ -5,7 +5,9 @@
       <div class="user">
         <div class="user_info">
           <div>
-            <div class="username">{{ userInfo.nickname }}</div>
+            <div @click="toMydata" class="username">
+              {{ userInfo.nickname }}
+            </div>
             <div class="userstyle">{{ userInfo.intro }}</div>
           </div>
           <div class="image">
@@ -18,7 +20,7 @@
             <p>累计答题</p>
           </li>
           <li>
-            <p>{{ userInfo.collectArticles.length }}</p>
+            <p>{{ userInfo.collectArticles }}</p>
             <p>收藏题目</p>
           </li>
           <li>
@@ -119,17 +121,17 @@
 </template>
 
 <script>
-import mycell from './mycell'
 // 导入mapMutations 根函数
 import { mapState } from 'vuex'
 export default {
   name: 'my',
-  components: {
-    mycell
-  },
+  components: {},
   methods: {
     cellClick () {
       console.log('click')
+    },
+    toMydata () {
+      this.$router.push('/My/mydata')
     }
   },
   computed: {

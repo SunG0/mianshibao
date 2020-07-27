@@ -1,13 +1,10 @@
 <template>
-  <van-cell
-    class="my-cell"
-    :title="title"
-    :value="value"
-    :border="false"
-    @click="clickCell"
-  >
+  <van-cell class="my-cell" :title="title" :border="false" @click="clickCell">
     <template #icon>
       <i class="iconfont" :class="icon"></i>
+    </template>
+    <template>
+      <slot>{{ value }}</slot>
     </template>
     <template #right-icon>
       <i class="iconfont iconicon_more"></i>
@@ -17,6 +14,7 @@
 
 <script>
 export default {
+  name: 'mycell',
   props: ['title', 'value', 'icon'],
   methods: {
     clickCell () {
