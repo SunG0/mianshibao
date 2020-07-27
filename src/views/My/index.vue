@@ -5,24 +5,24 @@
       <div class="user">
         <div class="user_info">
           <div>
-            <div class="username">Orange_Jc</div>
-            <div class="userstyle">面试不求人，我有面试宝</div>
+            <div class="username">{{ userInfo.nickname }}</div>
+            <div class="userstyle">{{ userInfo.intro }}</div>
           </div>
           <div class="image">
-            <img src="@/assets/user.png" alt="" />
+            <img :src="userInfo.avatar" alt="" />
           </div>
         </div>
         <ul>
           <li>
-            <p>666</p>
+            <p>{{ userInfo.submitNum }}</p>
             <p>累计答题</p>
           </li>
           <li>
-            <p>666</p>
+            <p>{{ userInfo.collectArticles.length }}</p>
             <p>收藏题目</p>
           </li>
           <li>
-            <p>666</p>
+            <p>{{ userInfo.errorNum }}</p>
             <p>我的错题</p>
           </li>
           <li>
@@ -46,7 +46,7 @@
           <van-cell-group>
             <mycell
               title="我的岗位"
-              value="产品经理"
+              :value="userInfo.position"
               icon="iconicon_mine_gangwei"
             ></mycell>
           </van-cell-group>
@@ -55,18 +55,24 @@
           <h3>面经数据</h3>
           <ul>
             <li>
-              <p>昨日阅读<span>+300</span></p>
-              <p>17</p>
+              <p>
+                昨日阅读<span>+{{ userInfo.shareData.read.yesterday }}</span>
+              </p>
+              <p>{{ userInfo.shareData.read.total }}</p>
               <p>阅读总数</p>
             </li>
             <li>
-              <p>昨日获赞<span>+300</span></p>
-              <p>297</p>
+              <p>
+                昨日获赞<span>+{{ userInfo.shareData.star.yesterday }}</span>
+              </p>
+              <p>{{ userInfo.shareData.star.total }}</p>
               <p>获赞总数</p>
             </li>
             <li>
-              <p>昨日新增<span>+300</span></p>
-              <p>17</p>
+              <p>
+                昨日新增<span>+{{ userInfo.shareData.comment.yesterday }}</span>
+              </p>
+              <p>{{ userInfo.shareData.comment.total }}</p>
               <p>评论总数</p>
             </li>
           </ul>
@@ -114,6 +120,8 @@
 
 <script>
 import mycell from './mycell'
+// 导入mapMutations 根函数
+import { mapState } from 'vuex'
 export default {
   name: 'my',
   components: {
@@ -123,7 +131,14 @@ export default {
     cellClick () {
       console.log('click')
     }
-  }
+  },
+  computed: {
+    // userInfo () {
+    //   return this.$store.state.userInfo
+    // }
+    ...mapState(['userInfo'])
+  },
+  created () {}
 }
 </script>
 

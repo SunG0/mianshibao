@@ -9,14 +9,20 @@
     <div class="content">
       <h2>您好，请登录</h2>
       <div class="form">
-        <van-form @submit="onSubmit">
+        <van-form @submit="onSubmit" ref="loginForm">
           <van-row class="item">
             <van-col span="24"></van-col>
             <van-field
               v-model="mobile"
-              name="用户名"
+              name="mobile"
+              type="tel"
               placeholder="请输入手机号"
-              :rules="[{ required: true, message: '请填写手机号' }]"
+              :rules="[
+                {
+                  pattern: /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/,
+                  message: '请填写手机号'
+                }
+              ]"
             >
               <template #left-icon>
                 <i class="iconfont iconbianzu1"></i> </template
@@ -27,7 +33,7 @@
             <van-col span="16"
               ><van-field
                 v-model="code"
-                name="验证码"
+                name="cide"
                 placeholder="请输入验证码"
                 :rules="[{ required: true, message: '请填写验证码' }]"
               >
@@ -36,8 +42,11 @@
                 </template> </van-field
             ></van-col>
             <van-col span="8" class="btn-col">
-              <van-button @click="getCode" class="btn van-hairline--left"
-                >获取验证码</van-button
+              <van-button
+                @click.prevent="getCode"
+                :disabled="delay !== -1"
+                class="btn van-hairline--left"
+                >{{ btnText }}</van-button
               >
             </van-col>
           </van-row>
@@ -63,29 +72,70 @@
 </template>
 
 <script>
-import { getCode } from '@/api/login.js'
+import { getCode, userLogin } from '@/api/login.js'
+import { setToken } from '@/utils/local'
 export default {
   name: 'login',
   components: {},
   data () {
     return {
       mobile: '',
-      code: ''
+      code: '',
+      btnText: '获取验证码',
+      delay: -1
     }
   },
   methods: {
     onClickLeft () {
       console.log('点击了')
     },
+    // 提交按钮
     onSubmit (values) {
-      console.log('submit', values)
+      // console.log('submit', values)
+      // 用户登录
+      // 加载框
+      this.$toast.loading({
+        duration: 0
+      })
+      userLogin(values).then(res => {
+        console.log(res)
+        this.$toast.success(res.message)
+        // 保存token
+        setToken(res.data.jwt)
+        // 存储个人信息
+        // 修改图片地址
+        res.data.user.avatar = process.env.VUE_APP_URL + res.data.user.avatar
+        this.$store.commit('SETUSERINFO', res.data.user)
+        // 跳转到my页面
+        this.$router.push('/My')
+      })
     },
     getCode () {
-      this.$toast.success('已发送')
-      getCode({ mobile: this.mobile }).then(res => {
-        console.log(res)
-        this.$notify({ type: 'success', message: res.data + '' })
-        // this.$notify.success(res.data + '')
+      // 当使用的不是button标签的时候用这种方法
+      // if (this.delay !== 0) {
+      //   return
+      // }
+      // 单独表单验证
+      this.$refs.loginForm.validate('mobile').then(res => {
+        // 加载框
+        this.$toast.loading({
+          duration: 0
+        })
+        // 设置60秒点击一次
+        this.delay = 59
+        this.btnText = `${this.delay}S后重试`
+        const timeId = setInterval(() => {
+          this.delay--
+          this.btnText = `${this.delay}S后重试`
+          if (this.delay < 0) {
+            clearInterval(timeId)
+            this.btnText = '获取验证码'
+          }
+        }, 1000)
+        // 调用接口
+        getCode({ mobile: this.mobile }).then(res => {
+          this.$toast.success(res.data)
+        })
       })
     }
   }
@@ -98,6 +148,7 @@ export default {
   background-color: #fff;
   font-family: PingFangSC, PingFangSC-Semibold;
   .top {
+    height: 88px;
     box-shadow: 0px 2px 4px 0px rgba(24, 26, 57, 0.04);
     .header {
       height: 44px;

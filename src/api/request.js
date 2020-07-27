@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const _axios = axios.create({
-  baseURL: 'http://localhost:1337',
+  baseURL: process.env.VUE_APP_URL,
   withCredentials: true
 })
 
@@ -9,7 +9,7 @@ const _axios = axios.create({
 _axios.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
-    console.log(config)
+    // console.log(config)
     return config
   },
   function (error) {
