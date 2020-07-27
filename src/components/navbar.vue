@@ -19,8 +19,8 @@
 
 <script>
 export default {
-  props: ['title', 'leftText', 'rightText'],
   name: 'navBar',
+  props: ['title', 'leftText', 'rightText'],
   methods: {
     onClickLeft () {
       this.$emit('onClickLeft')

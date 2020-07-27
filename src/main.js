@@ -17,10 +17,13 @@ import 'normalize.css'
 import './style/iconfont.css'
 // 导入基础样式
 import './style/base.less'
-
+// 导入 导航栏组件
+import navbar from './components/navbar.vue'
 // 导入flexible
 import 'amfe-flexible'
 Vue.use(Vant)
+// 全局注册组件
+Vue.component(navbar.name, navbar)
 Vue.config.productionTip = false
 
 new Vue({

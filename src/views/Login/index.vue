@@ -10,7 +10,7 @@
       <h2>您好，请登录</h2>
       <div class="form">
         <van-form @submit="onSubmit">
-          <van-row>
+          <van-row class="item">
             <van-col span="24"></van-col>
             <van-field
               v-model="mobile"
@@ -23,7 +23,7 @@
             ></van-field>
           </van-row>
           <div class="line"></div>
-          <van-row>
+          <van-row class="item">
             <van-col span="16"
               ><van-field
                 v-model="code"
@@ -63,13 +63,10 @@
 </template>
 
 <script>
-import navBar from './navbar'
 import { getCode } from '@/api/login.js'
 export default {
   name: 'login',
-  components: {
-    navBar
-  },
+  components: {},
   data () {
     return {
       mobile: '',
@@ -84,9 +81,11 @@ export default {
       console.log('submit', values)
     },
     getCode () {
-      this.$toast.success()
+      this.$toast.success('已发送')
       getCode({ mobile: this.mobile }).then(res => {
         console.log(res)
+        this.$notify({ type: 'success', message: res.data + '' })
+        // this.$notify.success(res.data + '')
       })
     }
   }
@@ -116,6 +115,10 @@ export default {
 
     .van-field__control {
       padding-left: 20px;
+      // border-bottom: 1px solid #f7f4f5;
+    }
+    .item {
+      border-bottom: 1px solid #f7f4f5;
     }
     .btn-col {
       height: 45px;
@@ -131,11 +134,10 @@ export default {
       color: #00b8d4;
       border: none;
     }
-    .line {
-      width: 345px;
-      height: 1px;
-      border: 1px solid #f7f4f5;
-    }
+    // .line {
+    //   width: 345px;
+    //   height: 1px;
+    // }
     p {
       font-size: 12px;
       font-weight: 400;
