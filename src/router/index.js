@@ -6,7 +6,7 @@ import My from '@/views/My'
 import Find from '@/views/Find'
 import login from '@/views/Login'
 import userInfo from '@/views/userInfo'
-import fixname from '@/views/fixname'
+import edit from '@/views/edit'
 import store from '@/store'
 import { Toast } from 'vant'
 import { getToken, removeToken } from '@/utils/local.js'
@@ -61,8 +61,8 @@ const routes = [
     }
   },
   {
-    path: '/fixname',
-    component: fixname,
+    path: '/edit',
+    component: edit,
     meta: {
       needLogin: true
     }

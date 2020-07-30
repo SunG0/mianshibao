@@ -28,7 +28,7 @@
             <p>我的错题</p>
           </li>
           <li>
-            <p>66%</p>
+            <p>{{ currentPosan }}%</p>
             <p>正确率</p>
           </li>
         </ul>
@@ -48,6 +48,7 @@
           <van-cell-group>
             <mycell
               title="我的岗位"
+              @click="$router.push('/edit?propName=position')"
               :value="userInfo.position"
               icon="iconicon_mine_gangwei"
             ></mycell>
@@ -135,9 +136,18 @@ export default {
     // userInfo () {
     //   return this.$store.state.userInfo
     // }
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo']),
+    currentPosan () {
+      return (
+        ((this.userInfo.submitNum - this.userInfo.errorNum) /
+          this.userInfo.submitNum) *
+        100
+      ).toFixed(1)
+    }
   },
-  created () {}
+  created () {
+    // console.log(this.currentPosan)
+  }
 }
 </script>
 
