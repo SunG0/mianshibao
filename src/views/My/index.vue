@@ -3,9 +3,9 @@
     <div class="top">
       <div class="header"></div>
       <div class="user">
-        <div class="user_info">
+        <div class="user_info" @click="$router.push('/userInfo')">
           <div>
-            <div @click="toMydata" class="username">
+            <div class="username">
               {{ userInfo.nickname }}
             </div>
             <div class="userstyle">{{ userInfo.intro }}</div>
@@ -20,7 +20,7 @@
             <p>累计答题</p>
           </li>
           <li>
-            <p>{{ userInfo.collectArticles }}</p>
+            <p>{{ userInfo.collectArticles.length }}</p>
             <p>收藏题目</p>
           </li>
           <li>
@@ -129,9 +129,6 @@ export default {
   methods: {
     cellClick () {
       console.log('click')
-    },
-    toMydata () {
-      this.$router.push('/My/mydata')
     }
   },
   computed: {

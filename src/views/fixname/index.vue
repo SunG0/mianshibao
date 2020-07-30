@@ -1,21 +1,43 @@
 <template>
   <div class="fixname">
     <div class="top">
-      <navbar title="修改昵称" rightText="保存"></navbar>
+      <navbar
+        title="修改昵称"
+        rightText="保存"
+        @onClickRight="onClickRight"
+        @onClickLeft="onClickLeft"
+      ></navbar>
     </div>
     <div class="content">
-      <van-field class="input" v-model="value" />
+      <van-field
+        class="input"
+        v-model="value"
+        :placeholder="userInfo.nickname"
+      />
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'fixname',
   data () {
     return {
-      value: 'orange'
+      value: ''
     }
+  },
+  methods: {
+    onClickRight () {
+      this.$store.commit('SETNICKNAME', this.value)
+      this.$router.push('/userInfo')
+    },
+    onClickLeft () {
+      this.$router.go(-1)
+    }
+  },
+  computed: {
+    ...mapState(['userInfo'])
   }
 }
 </script>

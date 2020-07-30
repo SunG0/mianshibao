@@ -33,7 +33,8 @@
             <van-col span="16"
               ><van-field
                 v-model="code"
-                name="cide"
+                name="code"
+                type="digit"
                 placeholder="请输入验证码"
                 :rules="[{ required: true, message: '请填写验证码' }]"
               >
@@ -74,6 +75,7 @@
 <script>
 import { getCode, userLogin } from '@/api/login.js'
 import { setToken } from '@/utils/local'
+import { mapMutations } from 'vuex'
 export default {
   name: 'login',
   components: {},
@@ -86,8 +88,15 @@ export default {
     }
   },
   methods: {
+    // 使用辅助函数  将SETUSERINFO  放到vue实例中，就可以直接用this调用这个方法了
+    ...mapMutations(['SETUSERINFO', 'SETISLOGIN']),
     onClickLeft () {
-      console.log('点击了')
+      // console.log('点击了')
+      if (this.$route.query.redirect) {
+        this.$router.push('/Find')
+      } else {
+        this.$router.go(-1)
+      }
     },
     // 提交按钮
     onSubmit (values) {
@@ -97,18 +106,31 @@ export default {
       this.$toast.loading({
         duration: 0
       })
-      userLogin(values).then(res => {
-        console.log(res)
-        this.$toast.success(res.message)
-        // 保存token
-        setToken(res.data.jwt)
-        // 存储个人信息
-        // 修改图片地址
-        res.data.user.avatar = process.env.VUE_APP_URL + res.data.user.avatar
-        this.$store.commit('SETUSERINFO', res.data.user)
-        // 跳转到my页面
-        this.$router.push('/My')
-      })
+      userLogin(values)
+        .then(res => {
+          // console.log(res)
+          this.$toast.success(res.message)
+          // 保存token
+          setToken(res.data.jwt)
+          // 存储个人信息
+          // 修改图片地址
+          res.data.user.avatar = process.env.VUE_APP_URL + res.data.user.avatar
+          // this.$store.commit('SETUSERINFO', res.data.user)
+          this.SETUSERINFO(res.data.user)
+          // 修改仓库中的是否登录的变量
+          this.SETISLOGIN(true)
+          // 跳转页面
+          // 当此时为从其他需要登录的页面跳转来登录页的（强制进行登录的）
+          if (this.$route.query.redirect) {
+            this.$router.push(this.$route.query.redirect)
+          } else {
+            // 这是本来就在登录页，将页面跳转到发现页（主动登录的）
+            this.$router.push('/Find')
+          }
+        })
+        .catch(err => {
+          this.$toast.fail(err.message)
+        })
     },
     getCode () {
       // 当使用的不是button标签的时候用这种方法

@@ -1,11 +1,7 @@
 <template>
   <div class="userInfo">
     <div class="top">
-      <navbar @onClickLeft="onClickLeft">
-        <template #title>
-          <slot name:title>我的资料</slot>
-        </template>
-      </navbar>
+      <navbar @onClickLeft="onClickLeft" title="我的资料"> </navbar>
     </div>
     <div class="content">
       <mycell class="userImg" title="头像">
@@ -14,12 +10,29 @@
         </template>
       </mycell>
       <van-cell-group>
-        <mycell title="昵称" value="12"></mycell>
-        <mycell title="性别" value="12"></mycell>
-        <mycell title="地区" value="12"></mycell>
-        <mycell title="个人简介" value="12"></mycell>
+        <mycell to="/fixname" title="昵称" :value="userInfo.nickname"></mycell>
+        <mycell title="性别" :value="SETGENDER"></mycell>
+        <mycell
+          title="地区"
+          :value="userInfo.area"
+          @click="show = true"
+        ></mycell>
+        <!-- 弹出层 -->
+        <van-popup v-model="show" position="bottom" :style="{ height: '30%' }">
+          <van-area
+            title="标题"
+            :area-list="areaList"
+            :columns-num="2"
+            :value="userInfo.area"
+            @cancel="onAreaCancel"
+            @confirm="onAreaConfirm"
+            ref="area"
+          />
+        </van-popup>
+
+        <mycell title="个人简介" :value="userInfo.intro"></mycell>
       </van-cell-group>
-      <van-button block class="logout_btn">
+      <van-button block class="logout_btn" @click="logout">
         退出登录
       </van-button>
     </div>
@@ -27,14 +40,65 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { removeToken } from '@/utils/local.js'
+import { mapState, mapMutations, mapGetters } from 'vuex'
+import { Dialog } from 'vant'
+import { areaList } from '@/utils/area.js'
 export default {
   name: 'userInfo',
+  components: {
+    [Dialog.Component.name]: Dialog.Component
+  },
+  data () {
+    return {
+      show: false,
+      areaList
+    }
+  },
   methods: {
-    onClickLeft () {}
+    ...mapMutations(['SETISLOGIN']),
+    ...mapMutations(['SETUSERSOME']),
+    // 后退
+    onClickLeft () {
+      this.$router.go(-1)
+    },
+    // 退出登录
+    logout () {
+      Dialog.confirm({
+        title: '提示',
+        message: '确认退出？'
+      })
+        .then(() => {
+          // 清除token
+          removeToken()
+          // 修改仓库中的是否登录的变量
+          this.SETISLOGIN(false)
+          // 跳转至登录页
+          this.$router.push('/login')
+        })
+        .catch(() => {
+          // on cancel
+        })
+    },
+    onAreaCancel () {
+      this.show = false
+    },
+    onAreaConfirm (res) {
+      console.log('res', res)
+      // const cityName = res[0].name
+      this.show = false
+      // this.SETUSERSOME({ area, cityName })
+    }
   },
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo']),
+    ...mapGetters(['SETGENDER'])
+    // ...mapGetters(['userArea'])
+    // 性别
+    // gender () {
+    //   const map = { 0: '未知', 1: '男', 2: '女' }
+    //   return map[this.userInfo.gender]
+    // }
   }
 }
 </script>
