@@ -7,7 +7,7 @@
     @click="clickCell"
   >
     <template #icon>
-      <i class="iconfont" :class="icon"></i>
+      <i class="iconfont left" :class="icon"></i>
     </template>
     <template class="right">
       <slot>{{ value }}</slot>
@@ -35,7 +35,7 @@ export default {
   height: 55px;
   align-items: center;
   // border-radius: 8px;
-  .iconfont:first-child {
+  .left {
     font-size: 22px;
     margin-right: 12px;
   }

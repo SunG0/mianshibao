@@ -1,6 +1,9 @@
 <template>
   <div class="app">
-    <router-view></router-view>
+    <keep-alive include="find">
+      <router-view></router-view>
+    </keep-alive>
+
     <van-tabbar
       v-model="active"
       route
