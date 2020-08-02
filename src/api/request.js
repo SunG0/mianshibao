@@ -9,7 +9,7 @@ const _axios = axios.create({
 // 添加请求拦截器
 _axios.interceptors.request.use(
   function (config) {
-    console.log(config)
+    // console.log(config)
     // 判断请求是否需要携带token
     if (config.needToken) {
       // 是  在请求头中添加token

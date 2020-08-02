@@ -96,11 +96,14 @@
 <script>
 import { technicList, shareList, hotData } from '@/api/find.js'
 import moment from 'moment'
+// 转中文
+import 'moment/locale/zh-cn'
 export default {
   name: 'find',
   filters: {
     formatTime (value) {
-      return moment(value).format('YYYY/MM/DD')
+      // return moment(value).format('YYYY/MM/DD').fromNow()
+      return moment(value, 'YYYYMMDD').fromNow()
     }
   },
   data () {
@@ -125,7 +128,7 @@ export default {
     // 获取数据
     getData () {
       technicList().then(res => {
-        // console.log('technicList', res)
+        console.log('technicList', res)
         res.data.list.forEach(v => {
           v.cover = process.env.VUE_APP_URL + v.cover
         })
