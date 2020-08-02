@@ -1,96 +1,103 @@
 <template>
-  <div class="find">
-    <div class="top">
-      发现
-    </div>
-    <div class="content">
-      <div class="skill">
-        <mycell title="面试技巧" value="查看更多"></mycell>
-        <div class="technicList">
-          <technicItem
-            v-for="item in technicList"
-            :key="item.id"
-            :title="item.title"
-            :time="item.created_at | formatTime"
-            :read="item.read"
-            :star="item.star"
-            :cover="item.cover"
-          ></technicItem>
-        </div>
+  <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+    <div class="find">
+      <div class="top">
+        发现
       </div>
-      <div class="data">
-        <mycell title="市场数据" value="查看更多"></mycell>
-        <div class="tag">
-          <span>{{ hotData.city }}</span>
+      <div class="content">
+        <div class="skill">
+          <mycell
+            title="面试技巧"
+            value="查看更多"
+            @click="$router.push('/technic')"
+          ></mycell>
+          <div class="technicList">
+            <technicItem
+              v-for="item in technicList"
+              :key="item.id"
+              :title="item.title"
+              :time="item.created_at | formatTime"
+              :read="item.read"
+              :star="item.star"
+              :cover="item.cover"
+            ></technicItem>
+          </div>
         </div>
-        <div class="tag">
-          <span>{{ hotData.position }}</span>
-        </div>
-        <div class="hot_data">
-          <div class="item" v-for="(item, index) in hotList" :key="index">
-            <div class="year">{{ item.year }}</div>
-            <div class="box">
-              <div
-                class="percent"
-                :style="{
-                  width:
-                    ((item.salary / hotData.topSalary) * 100).toFixed(1) + '%'
-                }"
-              >
-                ￥{{ item.salary }}
+        <div class="data">
+          <mycell title="市场数据" value="查看更多"></mycell>
+          <div class="tag">
+            <span>{{ hotData.city }}</span>
+          </div>
+          <div class="tag">
+            <span>{{ hotData.position }}</span>
+          </div>
+          <div class="hot_data">
+            <div class="item" v-for="(item, index) in hotList" :key="index">
+              <div class="year">{{ item.year }}</div>
+              <div class="box">
+                <div
+                  class="percent"
+                  :style="{
+                    width:
+                      ((item.salary / hotData.topSalary) * 100).toFixed(1) + '%'
+                  }"
+                >
+                  ￥{{ item.salary }}
+                </div>
+              </div>
+              <div class="upDown">
+                <i
+                  class="iconfont"
+                  :class="{
+                    iconicon_shangsheng: item.percent > 0,
+                    iconicon_xiajiang: item.percent < 0
+                  }"
+                ></i>
+                {{ item.percent }} <span v-if="item.percent">%</span>
               </div>
             </div>
-            <div class="upDown">
-              <i
-                class="iconfont"
-                :class="{
-                  iconicon_shangsheng: item.percent > 0,
-                  iconicon_xiajiang: item.percent < 0
-                }"
-              ></i>
-              {{ item.percent }} <span v-if="item.percent">%</span>
-            </div>
+          </div>
+          <div class="more" @click="Unfold">
+            展开更多
+            <i
+              class="iconfont iconicon_zhankai"
+              :class="{ rotate: isUnfold }"
+            ></i>
           </div>
         </div>
-        <div class="more" @click="Unfold">
-          展开更多
-          <i
-            class="iconfont iconicon_zhankai"
-            :class="{ rotate: isUnfold }"
-          ></i>
-        </div>
-      </div>
-      <div class="share">
-        <mycell title="面经分享" value="查看更多"></mycell>
-        <div
-          class="item van-hairline--bottom"
-          v-for="item in shareList"
-          :key="item.id"
-        >
-          <h3>
-            {{ item.title }}
-          </h3>
-          <p>
-            {{ item.content }}
-          </p>
-          <div class="detil">
-            <div class="user">
-              <img :src="item.author.avatar" alt="" />
-              <div class="username">{{ item.author.nickname }}</div>
-            </div>
-            <div class="time">{{ item.created_at | formatTime }}</div>
-            <div class="comment">
-              <i class="iconfont iconicon_pinglunliang"></i
-              >{{ item.article_comments }}
-            </div>
-            <div class="star">
-              <i class="iconfont iconbtn_dianzan_small_nor"></i>{{ item.star }}
+        <div class="share">
+          <mycell title="面经分享" value="查看更多"></mycell>
+          <div
+            class="item van-hairline--bottom"
+            v-for="item in shareList"
+            :key="item.id"
+          >
+            <h3>
+              {{ item.title }}
+            </h3>
+            <p>
+              {{ item.content }}
+            </p>
+            <div class="detil">
+              <div class="user">
+                <img :src="item.author.avatar" alt="" />
+                <div class="username">{{ item.author.nickname }}</div>
+              </div>
+              <div class="time">{{ item.created_at | formatTime }}</div>
+              <div class="comment">
+                <i class="iconfont iconicon_pinglunliang"></i
+                >{{ item.article_comments }}
+              </div>
+              <div class="star">
+                <i class="iconfont iconbtn_dianzan_small_nor"></i
+                >{{ item.star }}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </van-pull-refresh>
 </template>
 
 <script>
@@ -104,10 +111,17 @@ export default {
       hotData: {},
       hotList: [],
       shareList: [],
-      isUnfold: false
+      isUnfold: false,
+      isLoading: false
     }
   },
   methods: {
+    // 下拉刷新
+    onRefresh () {
+      this.getData()
+      this.$toast.success('刷新成功')
+      this.isLoading = false
+    },
     // 展开显示
     Unfold () {
       this.isUnfold = !this.isUnfold

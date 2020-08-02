@@ -35,12 +35,16 @@ export default {
 <style lang="less">
 .navbar {
   .van-nav-bar {
+    height: 44px;
     .van-nav-bar__left {
       padding: 0;
     }
     .iconbtn_nav_back {
       font-size: 44px;
     }
+  }
+  .van-hairline--bottom::after {
+    border-color: transparent;
   }
 }
 </style>

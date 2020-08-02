@@ -6,6 +6,8 @@ import My from '@/views/My'
 import Find from '@/views/Find'
 import login from '@/views/Login'
 import userInfo from '@/views/userInfo'
+import technic from '@/views/technic'
+import technicSearch from '@/views/technicSearch'
 import edit from '@/views/edit'
 import store from '@/store'
 import { Toast } from 'vant'
@@ -53,6 +55,7 @@ const routes = [
     path: '/login',
     component: login
   },
+  // 用户信息
   {
     path: '/userInfo',
     component: userInfo,
@@ -60,12 +63,23 @@ const routes = [
       needLogin: true
     }
   },
+  // 用户信息编辑
   {
     path: '/edit',
     component: edit,
     meta: {
       needLogin: true
     }
+  },
+  // 面试技巧
+  {
+    path: '/technic',
+    component: technic
+  },
+  // 面试技巧搜索
+  {
+    path: '/technicSearch',
+    component: technicSearch
   }
 ]
 
