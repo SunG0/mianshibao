@@ -9,6 +9,22 @@ function technicList (params) {
     params
   })
 }
+// 面试技巧热搜
+function technicTopSearch () {
+  return _axios({
+    url: '/articles/technicTopSearch',
+    method: 'get'
+  })
+}
+
+// 面试技巧详情接口
+function technicdtil (params) {
+  return _axios({
+    url: '/articles/technic/:id',
+    method: 'get',
+    params
+  })
+}
 
 // 市场数据
 function hotData () {
@@ -28,4 +44,4 @@ function shareList (params) {
   })
 }
 
-export { technicList, shareList, hotData }
+export { technicList, shareList, hotData, technicTopSearch, technicdtil }

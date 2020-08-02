@@ -40,7 +40,7 @@ export default {
   methods: {
     getData (params) {
       technicList(params).then(res => {
-        console.log('technicList', res)
+        // console.log('technicList', res)
         res.data.list.forEach(v => {
           v.cover = process.env.VUE_APP_URL + v.cover
         })

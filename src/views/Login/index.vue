@@ -91,12 +91,10 @@ export default {
     // 使用辅助函数  将SETUSERINFO  放到vue实例中，就可以直接用this调用这个方法了
     ...mapMutations(['SETUSERINFO', 'SETISLOGIN']),
     onClickLeft () {
-      // console.log('点击了')
-      if (this.$route.query.redirect) {
-        this.$router.push('/Find')
-      } else {
-        this.$router.go(-1)
-      }
+      console.log('点击了')
+      // if (this.$route.query.redirect) {
+      //   this.$router.push('/Find')
+      // }
     },
     // 提交按钮
     onSubmit (values) {

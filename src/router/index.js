@@ -66,10 +66,7 @@ const routes = [
   // 用户信息编辑
   {
     path: '/edit',
-    component: edit,
-    meta: {
-      needLogin: true
-    }
+    component: edit
   },
   // 面试技巧
   {

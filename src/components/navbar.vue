@@ -23,6 +23,7 @@ export default {
   props: ['title', 'leftText', 'rightText'],
   methods: {
     onClickLeft () {
+      this.$router.go(-1)
       this.$emit('onClickLeft')
     },
     onClickRight () {

@@ -25,6 +25,9 @@ export default {
   methods: {
     clickCell () {
       this.$emit('click')
+    },
+    valueClick () {
+      this.$emit('valueClick')
     }
   }
 }

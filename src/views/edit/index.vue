@@ -5,7 +5,6 @@
         :title="title"
         rightText="保存"
         @onClickRight="onClickRight"
-        @onClickLeft="onClickLeft"
       ></navbar>
     </div>
     <div class="content">
@@ -78,9 +77,6 @@ export default {
         // 返回到上一页
         this.$router.go(-1)
       })
-    },
-    onClickLeft () {
-      this.$router.go(-1)
     },
     // 上传头像
     afterRead (fileInfo) {

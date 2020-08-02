@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <keep-alive include="find">
+    <keep-alive include="find,technic">
       <router-view></router-view>
     </keep-alive>
 
