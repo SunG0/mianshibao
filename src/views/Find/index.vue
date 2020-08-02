@@ -95,17 +95,9 @@
 
 <script>
 import { technicList, shareList, hotData } from '@/api/find.js'
-import moment from 'moment'
-// 转中文
-import 'moment/locale/zh-cn'
+
 export default {
   name: 'find',
-  filters: {
-    formatTime (value) {
-      // return moment(value).format('YYYY/MM/DD').fromNow()
-      return moment(value, 'YYYYMMDD').fromNow()
-    }
-  },
   data () {
     return {
       technicList: [],

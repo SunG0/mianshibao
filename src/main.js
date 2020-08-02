@@ -16,6 +16,11 @@ import './style/base.less'
 import navbar from './components/navbar.vue'
 import mycell from './components/mycell.vue'
 import technicItem from './components/technicItem.vue'
+// 时间插件
+import moment from 'moment'
+// 转中文
+import 'moment/locale/zh-cn'
+
 // 导入flexible
 import 'amfe-flexible'
 Vue.use(Vant)
@@ -23,6 +28,12 @@ Vue.use(Vant)
 Vue.component(navbar.name, navbar)
 Vue.component(mycell.name, mycell)
 Vue.component(technicItem.name, technicItem)
+
+// 注册全局过滤器
+Vue.filter('formatTime', function (value) {
+  return moment(value, 'YYYYMMDD').fromNow()
+})
+// var myFilter = Vue.filter('my-filter')
 
 Vue.config.productionTip = false
 
