@@ -1,23 +1,30 @@
 <template>
   <div class="technicSearch">
-    <div class="top">
-      <navbar title="面试技巧"></navbar>
-      <div class="inputsearch">
-        <van-field
-          v-model="inputValue"
-          clearable
-          @keydown.enter="search"
-          @clear="isShow = false"
-          ref="input"
-        >
-          <template #left-icon>
-            <i class="iconfont iconicon_search"></i> </template
-        ></van-field>
+    <!--  吸顶 -->
+    <van-sticky>
+      <div class="top">
+        <navbar title="面试技巧"></navbar>
+        <div class="inputsearch">
+          <van-search
+            v-model="inputValue"
+            shape="round"
+            clearable
+            placeholder="请输入搜索关键词"
+            @search="search"
+            @clear="isShow = false"
+            ref="input"
+          >
+            <template #left-icon>
+              <i class="iconfont iconicon_search"></i>
+            </template>
+          </van-search>
+        </div>
       </div>
-    </div>
+    </van-sticky>
+
     <div class="search" v-if="!isShow">
       <div class="everyonesearch">
-        <mycell title="大家都在搜"></mycell>
+        <div class="hearder"><span>大家都在搜</span></div>
         <div
           @click="tagClick(item)"
           v-for="(item, index) in everyonesearchValue"
@@ -28,7 +35,10 @@
         </div>
       </div>
       <div class="history">
-        <mycell title="历史搜索" value="清空"></mycell>
+        <div class="hearder">
+          <span>历史搜索</span
+          ><span @click="clearHistory" class="clear">清空</span>
+        </div>
         <div
           @click="tagClick(item)"
           v-for="(item, index) in historyValue"
@@ -41,7 +51,7 @@
       </div>
     </div>
     <div class="searchres" v-if="isShow">
-      <technicItem
+      <!-- <technicItem
         v-for="item in searchList"
         :key="item.id"
         :title="item.title"
@@ -49,7 +59,8 @@
         :read="item.read"
         :star="item.star"
         :cover="item.cover"
-      ></technicItem>
+      ></technicItem> -->
+      <technicItem :technicList="searchList"></technicItem>
     </div>
   </div>
 </template>
@@ -71,11 +82,15 @@ export default {
     }
   },
   methods: {
+    // 清空历史纪录
+    clearHistory () {
+      this.historyValue = []
+    },
     //
     tagClick (item) {
       this.inputValue = item
       this.search()
-      this.$refs.input.focus()
+      // this.$refs.input.focus()
     },
     search () {
       // 非空判断  push到数组中
@@ -83,9 +98,12 @@ export default {
         if (this.historyValue.indexOf(this.inputValue) === -1) {
           this.historyValue.push(this.inputValue)
         }
+        if (this.historyValue.length >= 5) {
+          this.historyValue.shift()
+        }
         // 调用接口
         technicList({ q: this.inputValue }).then(res => {
-          //   console.log('res', res)
+          // console.log(111)
           res.data.list.forEach(v => {
             v.cover = process.env.VUE_APP_URL + v.cover
           })
@@ -100,7 +118,7 @@ export default {
   },
   created () {
     technicTopSearch().then(res => {
-      console.log('technicTopSearch', res)
+      // console.log('technicTopSearch', res)
       this.everyonesearchValue = res.data
     })
     // 是否有TOKEN
@@ -109,15 +127,15 @@ export default {
         this.historyValue = this.userInfo.history.technic
       } else {
         getUserInfo().then(res => {
-          //   console.log('res', res)
+          console.log('res', res.data.history.technic)
           this.historyValue = res.data.history.technic
         })
       }
     }
-  },
-  mounted () {
-    this.$refs.input.focus()
   }
+  // mounted () {
+  //   this.$refs.input.focus()
+  // }
 }
 </script>
 
@@ -131,7 +149,7 @@ export default {
     .inputsearch {
       padding: 0 15px 11px 15px;
 
-      .van-field {
+      .van-search {
         display: flex;
         align-items: center;
         height: 34px;
@@ -154,16 +172,17 @@ export default {
   .everyonesearch {
     padding: 0 15px;
     margin-bottom: 20px;
-    .my-cell {
-      padding: 18px 0;
-      font-size: 18px;
-      font-weight: 600;
-      color: #222222;
-      .left,
-      .iconicon_more {
-        display: none;
+    .hearder {
+      display: flex;
+      justify-content: space-between;
+      span {
+        padding: 18px 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #222222;
       }
-      .van-cell__value {
+
+      .clear {
         font-size: 12px;
         font-weight: 400;
         color: #545671;
@@ -178,6 +197,9 @@ export default {
       font-size: 12px;
       color: #545671;
     }
+  }
+  .searchres {
+    padding: 0 15px;
   }
 }
 </style>

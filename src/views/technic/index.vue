@@ -1,27 +1,29 @@
 <template>
   <div class="technic">
-    <div class="top">
-      <navbar title="面试技巧"></navbar>
-      <div class="search">
-        <van-field
-          class="iconfont search"
-          input-align="center"
-          v-model="inputValue"
-          :placeholder="icon"
-          @click="$router.push('/technicSearch')"
-        />
+    <van-sticky>
+      <div class="top">
+        <navbar title="面试技巧"></navbar>
+        <div class="search">
+          <van-field
+            class="iconfont search"
+            input-align="center"
+            v-model="inputValue"
+            :placeholder="icon"
+            @click="$router.push('/technicSearch')"
+          />
+        </div>
       </div>
-    </div>
+    </van-sticky>
+
     <div class="list">
-      <technicItem
-        v-for="item in technicList"
-        :key="item.id"
-        :title="item.title"
-        :time="item.created_at | formatTime"
-        :read="item.read"
-        :star="item.star"
-        :cover="item.cover"
-      ></technicItem>
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoad"
+      >
+        <technicItem :technicList="technicList"></technicItem>
+      </van-list>
     </div>
   </div>
 </template>
@@ -34,22 +36,35 @@ export default {
     return {
       inputValue: '',
       icon: '\ue647 请输入关键字',
-      technicList: ''
+      technicList: [],
+      loading: false,
+      finished: false,
+      start: 0,
+      limit: 5
     }
   },
   methods: {
-    getData (params) {
-      technicList(params).then(res => {
+    onLoad () {
+      technicList({ start: this.start, limit: this.limit }).then(res => {
         // console.log('technicList', res)
         res.data.list.forEach(v => {
           v.cover = process.env.VUE_APP_URL + v.cover
         })
-        this.technicList = res.data.list
+        this.technicList.push(...res.data.list)
+        // 第二次从上次的条数向下获取
+        this.start += this.limit
+        // 判断当前的列表是否为最大
+        if (this.technicList.length >= res.data.total) {
+          // 结束
+          this.finished = true
+        }
+        // 结束加载状态
+        this.loading = false
       })
     }
   },
   created () {
-    this.getData({ limit: 10 })
+    // this.getData({ limit: 10 })
   }
 }
 </script>

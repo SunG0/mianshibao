@@ -12,15 +12,7 @@
             @click="$router.push('/technic')"
           ></mycell>
           <div class="technicList">
-            <technicItem
-              v-for="item in technicList"
-              :key="item.id"
-              :title="item.title"
-              :time="item.created_at | formatTime"
-              :read="item.read"
-              :star="item.star"
-              :cover="item.cover"
-            ></technicItem>
+            <technicItem :technicList="technicList"></technicItem>
           </div>
         </div>
         <div class="data">

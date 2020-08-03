@@ -12,28 +12,31 @@ import 'normalize.css'
 import './style/iconfont.css'
 // 导入基础样式
 import './style/base.less'
-// 导入 导航栏组件
-import navbar from './components/navbar.vue'
-import mycell from './components/mycell.vue'
-import technicItem from './components/technicItem.vue'
+// 导入组件库
+import myPlugin from '@/components'
 // 时间插件
 import moment from 'moment'
-// 转中文
+// 时间转中文
 import 'moment/locale/zh-cn'
 
 // 导入flexible
 import 'amfe-flexible'
 Vue.use(Vant)
-// 全局注册组件
-Vue.component(navbar.name, navbar)
-Vue.component(mycell.name, mycell)
-Vue.component(technicItem.name, technicItem)
+// 注册组件库
+Vue.use(myPlugin)
 
 // 注册全局过滤器
-Vue.filter('formatTime', function (value) {
-  return moment(value, 'YYYYMMDD').fromNow()
+Vue.filter('formatTime', value => {
+  // return moment(value, 'YYYYMMDD').fromNow()
+  value = value.slice(0, value.length - 1)
+  // 计算时间差
+  const delayTime = moment().diff(moment(value), 'days')
+  if (delayTime > 1) {
+    return moment(value).format('YYYY-MM-DD')
+  } else {
+    return moment(value).fromNow()
+  }
 })
-// var myFilter = Vue.filter('my-filter')
 
 Vue.config.productionTip = false
 
