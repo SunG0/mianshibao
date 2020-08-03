@@ -1,5 +1,5 @@
 <template>
-  <div class="technicSearch">
+  <div class="shareSearch">
     <!--  吸顶 -->
     <van-sticky>
       <div class="top">
@@ -51,16 +51,7 @@
       </div>
     </div>
     <div class="searchres" v-if="isShow">
-      <!-- <technicItem
-        v-for="item in searchList"
-        :key="item.id"
-        :title="item.title"
-        :time="item.created_at | formatTime"
-        :read="item.read"
-        :star="item.star"
-        :cover="item.cover"
-      ></technicItem> -->
-      <technicItem :technicList="searchList"></technicItem>
+      <shareItem :shareList="searchList"></shareItem>
     </div>
   </div>
 </template>
@@ -68,10 +59,10 @@
 <script>
 import { mapState } from 'vuex'
 import { getUserInfo } from '@/api/user.js'
-import { technicTopSearch, technicList } from '@/api/find.js'
+import { shareTopSearch, shareList } from '@/api/find.js'
 import { getToken } from '@/utils/local.js'
 export default {
-  name: 'technicSearch',
+  name: 'shareSearch',
   data () {
     return {
       inputValue: '',
@@ -102,10 +93,10 @@ export default {
           this.historyValue.shift()
         }
         // 调用接口
-        technicList({ q: this.inputValue }).then(res => {
+        shareList({ q: this.inputValue }).then(res => {
           // console.log(111)
           res.data.list.forEach(v => {
-            v.cover = process.env.VUE_APP_URL + v.cover
+            v.author.avatar = process.env.VUE_APP_URL + v.author.avatar
             v.title = v.title.replace(
               this.inputValue,
               `<span>${this.inputValue}</span>`
@@ -121,18 +112,18 @@ export default {
     ...mapState(['userInfo'])
   },
   created () {
-    technicTopSearch().then(res => {
-      // console.log('technicTopSearch', res)
+    shareTopSearch().then(res => {
+      // console.log('shareTopSearch', res)
       this.everyonesearchValue = res.data
     })
     // 是否有TOKEN
     if (getToken()) {
       if (this.userInfo) {
-        this.historyValue = this.userInfo.history.technic
+        this.historyValue = this.userInfo.history.share
       } else {
         getUserInfo().then(res => {
-          console.log('res', res.data.history.technic)
-          this.historyValue = res.data.history.technic
+          console.log('res', res.data.history.share)
+          this.historyValue = res.data.history.share
         })
       }
     }
@@ -144,7 +135,7 @@ export default {
 </script>
 
 <style lang="less">
-.technicSearch {
+.shareSearch {
   height: 100vh;
   background-color: #fff;
   font-family: PingFangSC, PingFangSC-Medium;

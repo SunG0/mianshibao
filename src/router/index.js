@@ -8,6 +8,8 @@ import login from '@/views/Login'
 import userInfo from '@/views/userInfo'
 import technic from '@/views/technic'
 import technicSearch from '@/views/technicSearch'
+import share from '@/views/share'
+import shareSearch from '@/views/shareSearch'
 import edit from '@/views/edit'
 import store from '@/store'
 import { Toast } from 'vant'
@@ -77,6 +79,16 @@ const routes = [
   {
     path: '/technicSearch',
     component: technicSearch
+  },
+  // 面经分享
+  {
+    path: '/share',
+    component: share
+  },
+  // 面经分享搜索
+  {
+    path: '/shareSearch',
+    component: shareSearch
   }
 ]
 

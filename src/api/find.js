@@ -44,4 +44,19 @@ function shareList (params) {
   })
 }
 
-export { technicList, shareList, hotData, technicTopSearch, technicdtil }
+// 面试技巧热搜
+function shareTopSearch () {
+  return _axios({
+    url: '/articles/shareTopSearch',
+    method: 'get'
+  })
+}
+
+export {
+  technicList,
+  shareList,
+  hotData,
+  technicTopSearch,
+  technicdtil,
+  shareTopSearch
+}

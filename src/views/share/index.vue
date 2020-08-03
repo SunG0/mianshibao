@@ -1,5 +1,5 @@
 <template>
-  <div class="technic">
+  <div class="share">
     <van-sticky>
       <div class="top">
         <navbar title="面试技巧"></navbar>
@@ -9,7 +9,7 @@
             input-align="center"
             v-model="inputValue"
             :placeholder="icon"
-            @click="$router.push('/technicSearch')"
+            @click="$router.push('/shareSearch')"
           />
         </div>
       </div>
@@ -22,21 +22,21 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <technicItem :technicList="technicList"></technicItem>
+        <shareItem :shareList="shareList"></shareItem>
       </van-list>
     </div>
   </div>
 </template>
 
 <script>
-import { technicList } from '@/api/find.js'
+import { shareList } from '@/api/find.js'
 export default {
-  name: 'technic',
+  name: 'share',
   data () {
     return {
       inputValue: '',
       icon: '\ue647 请输入关键字',
-      technicList: [],
+      shareList: [],
       loading: false,
       finished: false,
       start: 0,
@@ -45,16 +45,16 @@ export default {
   },
   methods: {
     onLoad () {
-      technicList({ start: this.start, limit: this.limit }).then(res => {
-        // console.log('technicList', res)
+      shareList({ start: this.start, limit: this.limit }).then(res => {
+        // console.log('shareList', res)
         res.data.list.forEach(v => {
-          v.cover = process.env.VUE_APP_URL + v.cover
+          v.author.avatar = process.env.VUE_APP_URL + v.author.avatar
         })
-        this.technicList.push(...res.data.list)
+        this.shareList.push(...res.data.list)
         // 第二次从上次的条数向下获取
         this.start += this.limit
         // 判断当前的列表是否为最大
-        if (this.technicList.length >= res.data.total) {
+        if (this.shareList.length >= res.data.total) {
           // 结束
           this.finished = true
         }
@@ -70,7 +70,7 @@ export default {
 </script>
 
 <style lang="less">
-.technic {
+.share {
   height: 100vh;
   background-color: #fff;
   .top {

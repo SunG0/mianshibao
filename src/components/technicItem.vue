@@ -2,9 +2,7 @@
   <div class="technicItem">
     <div class="forItem" v-for="item in technicList" :key="item.id">
       <div class="left">
-        <h3 v-html="item.title">
-          <!-- {{ title }} -->
-        </h3>
+        <h3 v-html="item.title"></h3>
         <div class="detil">
           <div class="time">
             {{ item.created_at | formatTime }}
@@ -64,6 +62,9 @@ export default {
         font-size: 16px;
         height: 52px;
         line-height: 23px;
+        span {
+          color: @main-color;
+        }
       }
       .detil {
         display: flex;
