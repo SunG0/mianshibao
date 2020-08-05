@@ -18,11 +18,10 @@ function technicTopSearch () {
 }
 
 // 面试技巧详情接口
-function technicdtil (params) {
+function technicdetil (params) {
   return _axios({
-    url: '/articles/technic/:id',
-    method: 'get',
-    params
+    url: `/articles/technic/${params}`,
+    method: 'get'
   })
 }
 
@@ -44,11 +43,51 @@ function shareList (params) {
   })
 }
 
-// 面试技巧热搜
+// 面经分享详情接口
+function shareDetail (params) {
+  return _axios({
+    url: `/articles/share/${params}`,
+    method: 'get'
+  })
+}
+
+// 面经分享热搜
 function shareTopSearch () {
   return _axios({
     url: '/articles/shareTopSearch',
     method: 'get'
+  })
+}
+// 面经分享评论接口
+function shareComments (params) {
+  const { id, limit, start } = params
+  return _axios({
+    url: `/articles/comments/${id}`,
+    method: 'get',
+    params: {
+      limit,
+      start
+    }
+  })
+}
+
+// 发表评论
+function sendComment (data) {
+  return _axios({
+    url: '/articles/comments',
+    method: 'post',
+    needToken: true,
+    data
+  })
+}
+
+// 点赞文章
+function nicePaper (data) {
+  return _axios({
+    url: '/articles/star',
+    method: 'post',
+    needToken: true,
+    data
   })
 }
 
@@ -57,6 +96,10 @@ export {
   shareList,
   hotData,
   technicTopSearch,
-  technicdtil,
-  shareTopSearch
+  technicdetil,
+  shareTopSearch,
+  shareDetail,
+  shareComments,
+  sendComment,
+  nicePaper
 }

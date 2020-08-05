@@ -5,7 +5,10 @@
       v-for="item in shareList"
       :key="item.id"
     >
-      <h3 v-html="item.title"></h3>
+      <h3
+        v-html="item.title"
+        @click="$router.push(`/shareDetail/${item.id}`)"
+      ></h3>
       <p>
         {{ item.content }}
       </p>

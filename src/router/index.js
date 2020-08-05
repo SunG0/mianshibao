@@ -8,8 +8,10 @@ import login from '@/views/Login'
 import userInfo from '@/views/userInfo'
 import technic from '@/views/technic'
 import technicSearch from '@/views/technicSearch'
+import technicDetil from '@/views/technicDetil'
 import share from '@/views/share'
 import shareSearch from '@/views/shareSearch'
+import shareDetail from '@/views/shareDetail'
 import edit from '@/views/edit'
 import store from '@/store'
 import { Toast } from 'vant'
@@ -80,6 +82,11 @@ const routes = [
     path: '/technicSearch',
     component: technicSearch
   },
+  // 面试技巧详情
+  {
+    path: '/technicDetil/:id',
+    component: technicDetil
+  },
   // 面经分享
   {
     path: '/share',
@@ -89,6 +96,11 @@ const routes = [
   {
     path: '/shareSearch',
     component: shareSearch
+  },
+  // 面经分享详情
+  {
+    path: '/shareDetail/:id',
+    component: shareDetail
   }
 ]
 
@@ -96,6 +108,7 @@ const router = new VueRouter({
   routes
 })
 
+// 前置守卫
 router.beforeEach((to, from, next) => {
   // 判断是否需要登录
   if (to.meta.needLogin) {
@@ -141,4 +154,8 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+// 后置守卫
+router.afterEach((to, from) => {
+  window.scrollTo(0, 0)
+})
 export default router

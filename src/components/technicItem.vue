@@ -1,8 +1,16 @@
 <template>
   <div class="technicItem">
-    <div class="forItem" v-for="item in technicList" :key="item.id">
+    <div
+      class="forItem"
+      @click="getdetil(item.id)"
+      v-for="item in technicList"
+      :key="item.id"
+    >
       <div class="left">
-        <h3 v-html="item.title"></h3>
+        <h3
+          v-html="item.title"
+          @click="$router.push(`/technicDetil/${item.id}`)"
+        ></h3>
         <div class="detil">
           <div class="time">
             {{ item.created_at | formatTime }}
@@ -32,6 +40,11 @@ export default {
   props: ['technicList'],
   data () {
     return {}
+  },
+  methods: {
+    getdetil (id) {
+      this.$emit('getdetil', id)
+    }
   }
 }
 </script>

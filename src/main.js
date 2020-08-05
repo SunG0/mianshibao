@@ -18,17 +18,21 @@ import myPlugin from '@/components'
 import moment from 'moment'
 // 时间转中文
 import 'moment/locale/zh-cn'
+// 导入自定义插件
+import plugin from '@/plugin'
 
 // 导入flexible
 import 'amfe-flexible'
 Vue.use(Vant)
 // 注册组件库
 Vue.use(myPlugin)
+// 注册自定义插件
+Vue.use(plugin)
 
 // 注册全局过滤器
 Vue.filter('formatTime', value => {
   // return moment(value, 'YYYYMMDD').fromNow()
-  value = value.slice(0, value.length - 1)
+  // value = value.slice(0, value.length - 1)
   // 计算时间差
   const delayTime = moment().diff(moment(value), 'days')
   if (delayTime > 1) {
